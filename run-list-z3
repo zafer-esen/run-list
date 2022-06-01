@@ -1,0 +1,13 @@
+#!/bin/bash
+
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+
+source "$script_dir/options-parser"
+
+# These fields must be set manually for each tool
+TOOLNAME="Z3"
+BIN=z3
+TOOLVERSION=$($BIN --version) # enter manually or automate
+TOOLOPTIONS="-t:${WALLTIMELIMIT}000"
+
+source "$script_dir/run-list-smt"

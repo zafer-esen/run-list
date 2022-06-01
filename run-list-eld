@@ -1,0 +1,13 @@
+#!/bin/bash
+
+script_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd -P)
+
+source "$script_dir/options-parser"
+
+# These fields must be set manually for each tool
+TOOLNAME="Eldarica"
+BIN=/home/zafer/research/tools/repo-versions/eldarica-master/eld
+TOOLVERSION=$($BIN -h | grep Eldarica -m1) # enter manually or automate
+TOOLOPTIONS="-abstract:off -t:$WALLTIMELIMIT"
+
+source "$script_dir/run-list-smt"
