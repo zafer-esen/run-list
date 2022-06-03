@@ -6,6 +6,8 @@ Usage: run-list-* bmList [-h] [-tcpu value] [-twall value] [-notes string]
   -tcpu  must be followed by cpu timeout in seconds,  default: [-tcpu 1200]
   -twall must be followed by wall timeout in seconds, default: [-twall 600]
   -notes must be followed by a string, this will be printed in the log file.
+  -mail  must be followed by an email address, if provided the script will
+         try to end an email to this address on exit
 
   A log will be generated at the end of script's execution named \$(bmList).log1
 EOF
@@ -30,6 +32,7 @@ parse_params() {
     CPUTIMELIMIT=1200 # seconds
     WALLTIMELIMIT=600 # seconds
     NOTES=""
+    EMAIL=""
     while :; do
         case "${2-}" in
             -h | --help) usage ;;
@@ -44,6 +47,10 @@ parse_params() {
                 ;;
             -notes) # wall timeout
                 NOTES="${3-}"
+                shift
+                ;;
+            -mail) # email address
+                EMAIL="${3-}"
                 shift
                 ;;
             -?*) die "Unknown option: $2" ;;

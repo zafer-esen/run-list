@@ -55,4 +55,7 @@ for name in `cat $1`; do
 done
 }> ${1}-$TOOLNAME-$(date -u +%y%m%d-%H%M%S).log1
 
+if [$MAIL != ""]; then
+    mail -s "Completed execution of $TOOLNAME on $1." $MAIL
+fi
 
