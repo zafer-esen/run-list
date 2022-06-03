@@ -12,10 +12,9 @@ echo    "tool-options    : "$TOOLOPTIONS
 echo    "cpu-time-limit  : "$CPUTIMELIMIT s
 echo    "wall-time-limit : "$WALLTIMELIMIT s
 echo -n "os              : "; (uname)
-
+MODEL_NAME=$(lscpu | grep "Model name" | sed 's/^.*: * //')
 echo -n "cpu-model       : "
-MODEL_NAME=(lscpu | grep "Model name" | sed 's/^.*: * //')
-echo -n "cpu-model       : "; echo "$MODEL_NAME"
+echo "$MODEL_NAME"
 echo -n "cpu-count       : "; (nproc)
 echo -n "architecture    : "; (lscpu | grep "Architecture" | sed 's/^.*: * //')
 echo -n "mem-total       : "; (grep "MemTotal" /proc/meminfo | sed 's/^.*: * //')
@@ -62,6 +61,6 @@ total_elapsed=$SECONDS
 
 if [ -n "$EMAILADDRESS" ]; then
     #    ssh lc1 mail -s "\"Completed execution of $TOOLNAME on $1.\"" "$EMAILADDRESS" <<< "body"
-    ssh lc1 mutt -s "\"Completed execution of $TOOLNAME on $1 in $((total_elapsed/3600)):$((total_elapsed/60-(total_elapsed/3600)*60)):$((total_elapsed%60)).\"" "$EMA\
-ILADDRESS" -a "${PWD}/${1}-$TOOLNAME-$(date -u +%y%m%d-%H%M%S).log1"
+    ssh lc1 mutt -s "\"Completed execution of $TOOLNAME on $1 in $((total_elapsed/3600)):$((total_elapsed/60-(total_elapsed/3600)*60)):$((total_elapsed%60)).\"" \
+        "$EMAILADDRESS" -a "${PWD}/${1}-$TOOLNAME-$(date -u +%y%m%d-%H%M%S).log1"
 fi
