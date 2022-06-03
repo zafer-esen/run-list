@@ -32,7 +32,7 @@ parse_params() {
     CPUTIMELIMIT=1200 # seconds
     WALLTIMELIMIT=600 # seconds
     NOTES=""
-    EMAIL=""
+    EMAILADDRESS=""
     while :; do
         case "${2-}" in
             -h | --help) usage ;;
@@ -50,7 +50,7 @@ parse_params() {
                 shift
                 ;;
             -mail) # email address
-                EMAIL="${3-}"
+                EMAILADDRESS="${3-}"
                 shift
                 ;;
             -?*) die "Unknown option: $2" ;;
