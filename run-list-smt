@@ -34,7 +34,7 @@ for name in `cat $1`; do
   #       maybe YML files for SV-Comp benchmarks
   echo -n "expected : ";(grep ':status' $name)
 
-	start_time="$(date -u +%s)"
+	start_time="$(date -u +%s%N)"
   echo "output   : "
 
   timeout $WALLTIMELIMIT $BIN $name $TOOLOPTIONS 2>&1
@@ -52,13 +52,16 @@ for name in `cat $1`; do
       echo "timeout"
   fi
 
-  end_time="$(date -u +%s)"
-  elapsed="$(($end_time-$start_time))"
-  echo "duration : $elapsed s"
+  end_time="$(date -u +%s%N)"
+  elapsed_ms="$(($(($end_time-$start_time))/1000000))"
+  elapsed_s="$((elapsed_ms/1000))"
+  echo "duration : ${elapsed_s}.$(($elapsed_ms%1000)) s"
   echo
 done
 total_elapsed=$SECONDS
 }> $log_name
+
+echo "Completed execution of $TOOLNAME on $1 in $((total_elapsed/3600)):$((total_elapsed/60-(total_elapsed/3600)*60)):$((total_elapsed%60))."
 
 if [ -n "$EMAILADDRESS" ]; then
     #    ssh lc1 mail -s "\"Completed execution of $TOOLNAME on $1.\"" "$EMAILADDRESS" <<< "body"
